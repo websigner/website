@@ -1,0 +1,245 @@
+<html>
+    <head>
+        <title>Websigner</title>
+        <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Cuprum" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                }
+            body {
+                /* https://www.gradient-animator.com */
+                background: linear-gradient(252deg, #97969c, #0f6693);
+                background: linear-gradient(252deg, #97969c, #13b2d2);
+                background-size: 400% 400%;
+                -webkit-animation: gradient 5s ease infinite;
+                -moz-animation: gradient 5s ease infinite;
+                animation: gradient 5s ease infinite;
+                @-webkit-keyframes gradient {
+                    0%{background-position:15% 0%}
+                    50%{background-position:86% 100%}
+                    100%{background-position:15% 0%}
+                }
+                @-moz-keyframes gradient {
+                    0%{background-position:15% 0%}
+                    50%{background-position:86% 100%}
+                    100%{background-position:15% 0%}
+                }
+                @keyframes gradient { 
+                    0%{background-position:15% 0%}
+                    50%{background-position:86% 100%}
+                    100%{background-position:15% 0%}
+                }
+                
+            }
+            div {
+                position: relative;
+                top: 50%;
+                margin-top: -120px;
+                z-index: 50;
+            }
+            h1 {
+                color: #eee;
+                text-align: center;
+                font-family: 'Monoton';
+                font-size: 40px;
+                font-weight: 400;
+                font-style: normal;
+                -webkit-font-smoothing: antialiased;
+                }
+            p {
+                font-family: 'Cuprum', sans-serif;
+                font-size: 18px;
+                font-weight: 400;
+                font-style: normal;
+                color: #eee;
+                text-align: center;
+                line-height: 24px;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                text-decoration: none;
+                color: inherit;
+                line-height: 30px;
+                margin: 0 8px;
+                border-bottom: 1px solid #ccc;
+            }
+            a:hover{
+                border-bottom: 1px solid #fff;
+                color: #fff;
+            }
+            span, span a {
+                font-size: 14px;
+                color: #eee;
+            }
+            #box {
+                position: absolute;
+                display: block;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: 5;
+                top: 0;
+                /*display: none;*/
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script>
+            /* thanks @bdc*/
+            $(function(){
+              $('.email').each(function(i){
+                var protectedEmail = $(this).html();
+                protectedEmail = protectedEmail.replace(" [atsymbol] ","@");
+                protectedEmail = protectedEmail.replace(" [dotsymbol] ",".");
+                $(this)
+                  .html(protectedEmail)
+                  .replaceWith("<a href=\"mailto:"+$(this).text()+"\">"+$(this).text()+"</a>");
+              });
+            });    
+        </script>
+        <script>
+            /* URL rewriting*/
+            history.replaceState(null, null, 'https://www.websigner.be');
+        </script>
+        <!--<script>
+            /* thanks http://www.pixelsfighting.com */
+            var canvas, ctx;
+            var interval;
+            var width, height;
+            var size,step;
+            var Sum_1;
+                  color1 = Math.floor(Math.random()*16777215).toString(16)
+                  color1 = "#"+("000000" + color1).slice(-6)
+                  color1 =  "#12a4e0"
+                  color2 = Math.floor(Math.random()*16777215).toString(16)
+                  color2 = "#"+("000000" + color2).slice(-6)
+                  color2 = "#1ba0dd"; 
+            function setup() {
+                width = screen.width;
+                height = screen.height;
+                canvas = document.getElementById("box");
+                ctx = canvas.getContext("2d");
+                size=125;
+                step=300/size;
+                Sum_1=0;
+                initialize();
+                interval = setInterval(run,2);
+            }
+            // Intiiales Setzen der Boards
+            function initialize() {
+                Old = new Array (size);
+                New = new Array (size);
+                //Anzahl der Nachbarn
+                Neigh = new Array (size);
+                Ratio1 = new Array (size);
+
+                for (i = 0; i < Old . length; ++ i){
+                    Old [i] = new Array (size);
+                    New [i] = new Array (size);
+                    Neigh [i] = new Array (size);
+                    Ratio1 [i] = new Array (size);
+                }
+                for (i = 0; i < size; ++ i){
+                    for (j = 0; j < size; ++ j){
+                        Ratio1 [i][j]=0;
+                        Neigh[i][j]=8;
+                        if (i===0 || i===size-1) {
+                            Neigh[i][j]=5;
+                            if(j===0 || j===size-1) {
+                                Neigh[i][j]=3
+                            }
+                        }
+                        if (j===0 || j===size-1) {
+                            Neigh[i][j]=5;
+                            if(i===0 || i===size-1) {
+                                Neigh[i][j]=3
+                            }
+                        }
+                        if (i<size/2){
+                            Old [i][j] = 1;
+                            Sum_1+=1
+                        } 
+                        else {
+                            Old [i][j] = 0;
+                        }
+                        New [i][j] = Old [i][j];
+                    }
+                }
+                Sum_1=Sum_1/(size*size);
+            }
+            function ratio() {
+                for (i = 0; i < size; ++ i){
+                    for (j = 0; j < size; ++ j){
+                        Ratio1[i][j]=0;
+                        if(i>0){
+                            if(j>0){ 		Ratio1[i][j]+=Old[i-1][j-1];}
+                                            Ratio1[i][j]+=Old[i-1][j];
+                            if(j<size-1){	Ratio1[i][j]+=Old[i-1][j+1];}
+                        }
+                        if(j>0){ 		Ratio1[i][j]+=Old[i][j-1];}
+                        if(j<size-1){	Ratio1[i][j]+=Old[i][j+1];}
+
+                        if(i<size-1){
+                            if(j>0){ 		Ratio1[i][j]+=Old[i+1][j-1];}
+                                            Ratio1[i][j]+=Old[i+1][j];
+                            if(j<size-1){	Ratio1[i][j]+=Old[i+1][j+1];}
+                        }
+                        Ratio1[i][j]=Ratio1[i][j]/Neigh[i][j];
+                    }
+                }
+                    console.log(Neigh[1][1]);
+                console.log(Ratio1[1][1]);
+                        console.log(Sum_1);
+            }
+            function draw() {
+                for (i = 0; i < size; ++ i){
+                    for (j = 0; j < size; ++ j){
+                                ctx.fillStyle = color1;
+                                if(Old[i][j]===1){ctx.fillStyle = color2;}						
+                            ctx.fillRect (i*step, j*step, step, step);
+                        }
+                    }
+            }
+            function calculate() {
+                for (i = 0; i < size; ++ i){
+                    for (j = 0; j < size; ++ j){
+                        help=Math.random();
+
+                        if ((Ratio1[i][j])>help){
+                            Old[i][j]=1;
+                        } else{Old[i][j]=0;
+                        }
+                    }
+                }
+                Sum_1=0;
+                for (i = 0; i < size; ++ i){
+                    for (j = 0; j < size; ++ j){
+                        if (Old[i][j]==1) Sum_1+=1;
+                    }
+                }
+                Sum_1=Sum_1/(size*size);
+            }
+            function run() {
+                ratio();
+                draw();
+                calculate();
+            }
+        </script>-->
+  
+    </head>
+    <body onload="setup()">
+        <div>
+            <h1>websigner</h1>
+            <p>
+                <a href="https://twitter.com/websigner">Twitter</a> - <a href="https://www.instagram.com/websigner/">Instagram</a> - <a href="https://dribbble.com/websigner">Dribbble</a><br>
+                <br>
+                The web is way bigger than this tiny site,<br>look for me (and my work) at the links above.<br><br>Feel free to follow me.<br>
+                <br>
+                <span>Oh,... and for the die-hard mailers:<em class="email">lieven [atsymbol] websigner [dotsymbol] be</em>.</span>
+                
+            </p>
+        </div>
+        <canvas id="box"></canvas>
+    </body>
+</html>
