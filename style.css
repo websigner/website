@@ -1,8 +1,24 @@
-html { font-size: 62.5%; } 
+/* GLOBALS */
+
+html {
+  font-size: 62.5%;
+  } 
+
 * {
   margin: 0;
   padding: 0;
   }
+
+/* MOBILE STYLES  */
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 120%;
+    }
+}
+
+/* BASIC */
+
 body {
   /* https://www.gradient-animator.com */
   background: linear-gradient(252deg, #97969c, #0f6693);
